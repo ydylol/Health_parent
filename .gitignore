@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+=======
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+>>>>>>> d4e2429c6638422c69f7fda58cdc1db8e79f73b1
 # Compiled class file
 *.class
 
@@ -20,6 +31,10 @@
 *.rar
 
 # target#
+<<<<<<< HEAD
 target.*
+=======
+/target.*/
+>>>>>>> d4e2429c6638422c69f7fda58cdc1db8e79f73b1
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
