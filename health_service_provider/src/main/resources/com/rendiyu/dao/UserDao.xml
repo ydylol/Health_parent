@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rendiyu.dao.UserDao">  <!--namespace 必须是唯一的-->
+<resultMap id="Userbyusername" type="com.rendiyu.pojo.User">
+    <id column="id" property="id"></id>
+    <result property="birthday" column="birthday"></result>
+    <result property="gender"  column="gender"></result>
+    <result property="username" column="username"></result>
+    <result property="password" column="password"></result>
+    <result property="remark" column="remark"></result>
+    <result property="station" column="station"></result>
+    <result property="telephone" column="telephone"></result>
+    <collection property="roles" column="id" ofType="com.rendiyu.pojo.Role"
+                select=""></collection>
+</resultMap>
+
+    <select id="findUserByUsername" resultType="com.rendiyu.pojo.User" parameterType="java.lang.String" >
+        select * from t_user where username=#{username}
+    </select>
+</mapper>

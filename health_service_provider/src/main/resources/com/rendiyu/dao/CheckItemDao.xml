@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rendiyu.dao.CheckItemDao">  <!--namespace 必须是唯一的-->
+    
+    <insert id="addCheckItem"  parameterType="com.rendiyu.pojo.CheckItem">
+        insert into t_checkitem  (code,name,sex,age,price,type,attention,remark)
+            values (#{code},#{name},#{sex},#{age},#{price},#{type},#{attention},#{remark})
+
+    </insert>
+    <update id="edit" parameterType="com.rendiyu.pojo.CheckItem" >
+        update t_checkitem
+            <set>
+                <if test="code!=null">
+                    code=#{code},
+                </if>
+                <if test="name!=null">
+                    name=#{name},
+                </if>
+                <if test="sex!=null">
+                    sex=#{sex},
+                </if>
+                <if test="age!=null">
+                    age=#{age},
+                </if>
+                <if test="price!=null">
+                    price=#{price},
+                </if>
+                <if test="type!=null">
+                    type=#{type},
+                </if>
+                <if test="attention!=null">
+                    attention=#{attention},
+                </if>
+                <if test="remark!=null">
+                    remark=#{remark}
+                </if>
+            </set>
+        where id=#{id}
+    </update>
+    <delete id="delete">
+
+        delete from t_checkitem where id =#{id}
+    </delete>
+    <delete id="deleteByIdFromTcc">
+        delete from t_checkgroup_checkitem where checkitem_id= #{id}
+    </delete>
+
+    <select id="findByCondition" parameterType="String" resultType="com.rendiyu.pojo.CheckItem">
+        select *  from t_checkitem
+        <if test="value != null and value.length > 0">
+            where code = #{value} or name = #{value}
+        </if>
+    </select>
+    <select id="findById" resultType="com.rendiyu.pojo.CheckItem">
+        select * from t_checkitem where id = #{id}
+    </select>
+    <select id="findByIdFromTCC" resultType="java.lang.Integer">
+        select count(*) from t_checkgroup_checkitem where checkitem_id = #{id}
+    </select>
+    <select id="findAll" resultType="com.rendiyu.pojo.CheckItem">
+        select * from t_checkitem
+    </select>
+    <select id="findCheckItemByCheckGroupId" resultType="com.rendiyu.pojo.CheckItem">
+        select * from t_checkitem where id in(
+            SELECT checkitem_id  FROM t_checkgroup_checkitem WHERE checkgroup_id =#{id})
+    </select>
+
+
+</mapper>

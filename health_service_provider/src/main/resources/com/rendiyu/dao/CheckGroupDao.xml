@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rendiyu.dao.CheckGroupDao">
+
+    <insert id="addCheckGroup" parameterType="com.rendiyu.pojo.CheckGroup">
+        insert into t_checkgroup (code, name, helpCode, sex, remark, attention) VALUES (#{code},#{name},#{helpCode},#{sex},#{remark},#{attention})
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <insert id="addTCC">
+        insert  into t_checkgroup_checkitem   VALUES (#{param1},#{param2})
+    </insert>
+    <update id="edit" parameterType="com.rendiyu.pojo.CheckGroup" >
+        update t_checkgroup
+        <set>
+            <if test="code!=null">
+                code=#{code},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="helpCode!=null">
+                helpCode=#{helpCode},
+            </if>
+            <if test="sex!=null">
+                sex=#{sex},
+            </if>
+            <if test="remark!=null">
+                remark=#{remark},
+            </if>
+            <if test="attention!=null">
+                attention=#{attention}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+    <delete id="deleteRelation" parameterType="integer">
+        delete from t_checkgroup_checkitem where checkgroup_id=#{value}
+    </delete>
+    <delete id="deleteByid">
+        delete  from t_checkgroup where id=#{value}
+    </delete>
+    <delete id="deleteRelation1">
+        delete from t_setmeal_checkgroup where checkgroup_id=#{value}
+
+    </delete>
+
+    <select id="findByCondition" parameterType="String" resultType="com.rendiyu.pojo.CheckGroup">
+        select *  from t_checkgroup
+        <if test="value != null and value.length > 0">
+            where code = #{value} or name = #{value}
+        </if>
+    </select>
+    <select id="findById" resultType="com.rendiyu.pojo.CheckGroup" parameterType="integer">
+        select * from t_checkgroup where id=#{id}
+    </select>
+    <select id="findCheckItemIdsByCheckGroupId" resultType="integer">
+        select  checkitem_id from t_checkgroup_checkitem where checkgroup_id =#{id}
+    </select>
+    <select id="findAll" resultType="com.rendiyu.pojo.CheckGroup">
+        select * from t_checkgroup
+    </select>
+
+    <resultMap id="findByIdResultMap" type="com.rendiyu.pojo.CheckGroup">
+        <id column="id" property="id"></id>
+        <result column="code" property="code"></result>
+        <result column="name" property="name"></result>
+        <result column="helpCode" property="helpCode"></result>
+        <result column="sex" property="sex"></result>
+        <result column="remark" property="remark"></result>
+        <result column="attention" property="attention"></result>
+        <collection property="checkItems" column="id" ofType="com.rendiyu.pojo.CheckItem"
+        select="com.rendiyu.dao.CheckItemDao.findCheckItemByCheckGroupId"></collection>
+    </resultMap>
+
+    <select id="findCheckGroupBySetmealId" resultMap="findByIdResultMap">
+        select * from t_checkgroup where id in (select  checkgroup_id from t_setmeal_checkgroup where setmeal_id=#{id})
+    </select>
+</mapper>

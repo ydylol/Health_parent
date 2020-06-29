@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rendiyu.dao.OrderDao">
+
+
+    <select id="findByOrder" resultType="com.rendiyu.pojo.Order">
+        select * from t_order where orderDate=#{orderDate} and member_id=#{memberId} and setmeal_id=#{setmealId}
+    </select>
+    <insert id="add">
+        <selectKey resultType="java.lang.Integer" order="AFTER"
+                   keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into  t_order (member_id, orderDate, orderType, orderStatus, setmeal_id) VALUES
+            (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
+    </insert>
+    
+
+    <select id="findById" resultType="java.util.Map" parameterType="int">
+       select   m.name member,s.name setmeal,o.orderDate orderDate,orderType orderType
+       from t_order o ,t_member m ,t_setmeal s
+        where o.member_id=m.id and o.setmeal_id=s.id and o.id=#{id}
+    </select>
+</mapper>
