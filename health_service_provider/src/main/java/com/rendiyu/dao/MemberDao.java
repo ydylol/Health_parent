@@ -10,4 +10,19 @@ public interface MemberDao {
     Member findMemberBytelephone(Member member);
 
     Integer findMemberCountBeforeDate(String m);
+
+    /**
+     * //今日新增会员数
+     * @param today
+     * @return
+     */
+    Integer findMemberCountByDate(String today);
+
+    /**
+     * 总会员数
+     * @return
+     */
+    Integer findMemberTotalCount();
+
+    Integer findMemberCountAfterDate(String thisWeekMonday);
 }

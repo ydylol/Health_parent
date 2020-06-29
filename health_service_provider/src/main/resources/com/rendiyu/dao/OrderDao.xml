@@ -22,4 +22,34 @@
        from t_order o ,t_member m ,t_setmeal s
         where o.member_id=m.id and o.setmeal_id=s.id and o.id=#{id}
     </select>
+
+<!--    预约总数-->
+    <select id="findOrderCountByDate" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate =#{value}
+    </select>
+<!--该日期至今的预约数-->
+    <select id="findOrderCountAfterDate" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate &gt;=#{value}
+    </select>
+<!--    根据日期查询已到诊的人数-->
+    <select id="findVisitsCountByDate" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate=#{value} and orderStatus='已到诊'
+    </select>
+
+    <select id="findVisitsCountAfterDate" resultType="java.lang.Integer">
+        select count(id) from t_order where orderDate &gt;=#{value} and orderStatus='已到诊'
+    </select>
+
+    <!--‐热门套餐，查询前4条-->
+    <select id="findHotSetmeal" resultType="map">
+        SELECT s.name,
+               COUNT(o.id) setmeal_count,
+               COUNT(o.id)/(SELECT COUNT(id) FROM t_order) proportion
+        FROM t_order o,t_setmeal s WHERE s.id=o.setmeal_id
+        GROUP BY o.setmeal_id
+        ORDER BY setmeal_count DESC
+        LIMIT 0,4;
+    </select>
+
+
 </mapper>

@@ -25,4 +25,16 @@
         values(#{fileNumber},#{name},#{sex},#{idCard},#{phoneNumber},
         #{regTime},#{password},#{email},#{birthday},#{remark})
     </insert>
+<!--总会员数量-->
+    <select id="findMemberTotalCount" resultType="java.lang.Integer">
+        select  count(id) from t_member
+    </select>
+<!--当日会员数量-->
+    <select id="findMemberCountByDate" resultType="java.lang.Integer">
+        select count(id) from t_member where regTime=#{value}
+    </select>
+
+    <select id="findMemberCountAfterDate" resultType="java.lang.Integer">
+        select count(id) from t_member where regTime &gt;=#{value}
+    </select>
 </mapper>

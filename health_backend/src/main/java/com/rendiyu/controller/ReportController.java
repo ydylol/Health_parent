@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.rendiyu.constant.MessageConstant;
 import com.rendiyu.entity.Result;
 import com.rendiyu.service.MemberService;
+import com.rendiyu.service.ReportService;
 import com.rendiyu.service.SetmealService;
 import com.rendiyu.utils.DateUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,8 @@ public class ReportController {
     MemberService memberService;
     @Reference
     SetmealService setmealService;
-
+    @Reference
+    ReportService  reportService;
 
     @RequestMapping("/getMemberReport")
     public Result getMemberReport(){
@@ -55,5 +57,16 @@ public class ReportController {
         return new Result(true,MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS,map);
     }
 
+    @RequestMapping("/getBusinessReportData")
+    public Result getBusinessReportData() {
 
+        try {
+            Map<String, Object> map = reportService.getBusinessReportData();
+            return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(true, MessageConstant.GET_BUSINESS_REPORT_FAIL);
+        }
+
+    }
 }
